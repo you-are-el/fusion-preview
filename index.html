@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>FUSION</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .input-container {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+        }
+
+        .title {
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            font-size: 32px;
+            font-weight: Bold;
+        }
+
+        .art-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: auto;
+            width: auto;
+            margin: 10px;
+            float: left;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #000000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        canvas {
+            display: block;
+            height: calc(100% - 160px);
+            /* Adjust height to fit within the window */
+            width: auto !important;
+            max-height: 80%;
+        }
+
+        .sat-number {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <script
+        src="https://ordiscan.com/content/7e37766541506810ba6399c4b2735121f508bd9209df43dd200bf2316b014594i0"></script>
+</head>
+
+<body>
+    <div class="title">FUSION</div>
+    <div class="input-container">
+        <button onclick="generateAllFusions()">Preview</button>
+    </div>
+    <div id="main-container"></div>
+    <script>
+        let img;
+        let sat;
+        let seed;
+        let borderSize;
+        let borderColor;
+        let dv;
+        let threshold;
+        let invert = false;
+        let scale_factor = 0.5;
+        let identifiers =
+            "e67c97c333d196d4dbda60614348c7d03737b8bbe92f2d36d35bdc3d142b1126i0,e02c87e66169675b40bcbabc9590b851243a308a2df78d5ccd8a1bf90d3e9ea9i0,24809167c3c5d8414437730e662fbdc2b351a016f6ec70511b0d54d87e76bf09i0,99ddc511b35e22a3b5b191b0bebb6761517ab70a1667cc84443af1fa89af66eci0,68969059a785b5fd09179d71d1a5e0968b632f002ec860e6396c8dbf45e107f0i0,320c8c589da0a599125f13c2ea1b3f4516894c8cbe8ace9f5d9f45f4e45f2d71i0,2d7de1b43cf5fd719d357a2c11999386b3570e4ac1cb19927a5d6277f278cb5fi0,1e381f06a6507051ce3122af4fdb2d3961d7d8118466776237db47c9bfae8bb9i0,fbc1f5f0bb7025beca2b0c162b1e04edc8c813b8cd207b8222501b20cc320d66i0,79ced712f3743e8d2df928069fd76826d291869c1adeed567cc5f2ce38bb0d1bi0,4587a843fcec652d75a059424b0df6fc5a9ef8166dae6babcb0fcbe914bdcaf6i0,7e17355f4084df66f5a78caa4b850be958378c56e6a488d7647c70c58dfd037ei0,de62ce234fc234bc31a5d9f92db8f3d887382c7dfea2cd98159a72f57981ffc0i0,3ed2d75eb61e355f28911e23fc17e97edb6bd663743aea2eaa20c6254ed6b47bi0,3eaa17d6a2926d76a5ba4e8ec2f51a2389a20a034f29753a249603276245746ei0,0dcd3287fec0a3bda47c7c132a096c691abdd0810fdb7b49ebdf832257908782i0,7ca7d2096d943a43f96022cf0e0aded7275cf7531733f449b670c9806a1081a6i0,aafe1c3ca786fead9d64d4fbc40ee50cd9d18bfe7d43f567f5aef689be29df63i0,97a60fa86e9fea78aa011d9c3943fccfd9d3c39260520103f6aa1d6147aeb16bi0,e7bd71fcadfa19f5422ff709a54927292f03cfe8b937b70b61da0dbbd07361f4i0,dfa5973ea0ca9aef43348dfe001303fbfa70b870a956bd1c5cd9935c46bf9366i0,8d242898a422a87b1e83edb1c1b7d06c4acd750c14eff64a00492d151e090a2ai0,24137036f2fbc41c3d51bc5fce6bb1a4703cf92e9a78298cd083c747743203e8i0,80de42e61c3c4446460684263a5b3b0f7383e508344ba15b9f8312e0ce3df250i0,dcacf0b778e17baae1374856bf1ebffc7300ae8dc2d49b2da37df79d7d4e8db2i0,b25d37b4d2d0400cd3bb97a22473ffc189d654b90382654dcb9ae640aa03cf23i0,cccfdfd5f279c5b8ebe6b5c5357515efb674eba8c89bfd6f74603003bcf04202i0,9cb05328feb19f03d343fbcee3d5732e62511e8f206eefc3aae49901e83721b5i0,0d04af144f216a44be74e37ba95af9bfec28857a8427460c112cf2615851f186i0,ed20f7aaa7649fe1002cda50dfd2b30b7fd5feb3ed4a7d2fcde27bbca90b3603i0,8a971622e3787ae53503385ef62e24430166279fcb593cff3fb9c6a0fe27de15i0,12444d63c058a419787c44abdd59b63b76f931d5944c02adb5d7b6e28ade7d96i0,f852020a6ec3ea46783f35526baecf728def61b2cf214ba0a42b581d67716858i0,bd0420a388bed1fd6ba587649a0b6c758d32ca5a200a7e8e15353990fed85899i0,a84aae831e993c9995ec93798624a24ad30ae5b7616176aed62ca17ae82b1384i0,0bf1e2917a067cf99ab761149cedcd99b98d88ce44db8139d188d7264e745778i0,7022e1f24fefeb0dcdd7f482ed3a68e649b48d34594765c26878e768603c9308i0,8668dc1311a81d3287e268ce726004dbed80576f7e52e5ad4865d7795390508ci0,193f87abf07a9e9b8e949f0464274e5cde7da768a96f12a27f21c27b81065cb6i0,d15c799b16a0c2133af31743b974467f8ad52c7c02445e7930bd6dc865a7521bi0,d727246bf17dbcb28217e75c00e257ec1cec40b958b415d32084342ac6a059c5i0,31cc25ff5fa36190501f4345a0154c4a06ef35efe8ced3368c22cde1317e48edi0,5e15728e86b9e2f8d600df7482b94da1ee47edb8ea22b60a2ae6862ae94b8be1i0,307b104e4196178903e4d907ed176190232039a2253a8afb231c99e6391a2ce8i0,27af7c0d7ae79d96583e57a98f8c1967c6354bc3af504955677b1c05a4c31b6ci0,f671102485d0975fe1ef789e50fb71c9c12991fd4975195f9ddf6c38b9b5a1bai0,07c966edae51e5cf566e9f3a6f38d49e873a01c178e385235c20828f23d9f30ai0,7c63acd65f0a560271001a8063d6b2369da57cdd1babdeaff46b041c456150f8i0,452a82216987c6e3687ded889612662a7ae92b02c58f812790c1ac9b4a3563a7i0,0323d023b3aa4486fcbef080e9ae58e009cbb0bfed6027ca2cd6b05959dfccb7i0,519707ef2d7d746cf3be8017f9fabb44023920de016f5bf021a961470d7f5146i0,fb6714a676fe9bc068e79c447641a0fdae7239c82e24801b7ac79d89f1826800i0,488fecd71e77d4c23ce89f35c228fafd716e0b24b0e1ab469bbe0a015cc1a260i0,da91a3cde165201e2f4301e7c519d3efc867bff168f22570fbb735d398e4ede0i0,03bcc731b769f41e06c38d16fd24c86785388a3986d00f29708fc222c1ec3bffi0,9b9a24e8251832532cd6df1009812b386590405bea734ee6bd5624781c636531i0,901e82a1b4654bd1a76a1f03b1d902f652ee773d11cb0c5d39381e50ed7dea13i0,6ae4939ca52de2823f14fb38679e5b52dafed7cf6033e15aa9c0d0bc7319b82ci0,0a44e18faf1220205f252c8f0ac769e4597de0d99a6b7cb3e9a98710ee377d5fi0,e53ff1f74eb8b413219cd6c7e37aedb21f94a72cd84d63c71d14e7d1bd68d0c1i0,60f281b3ebf692cc2a441b9eacd394ab052674db87ee8e6339bf013ed6ef9f4bi0,deb7024dee4cf2ee0ccdc18c065208cf02443d37032093ab6f1366405ea69f63i0,c67e40a619d48d9579dd694044eaae384db16a13bd62d6b9ff6c10adf5a281ffi0,3a71b45499f6b3f625917ac879d31cecc4709967720c1ba2e3464f44f585c841i0,21c3c5b208ffb39ddba2c4854efd16479739dcdf32b7ac3b9460a67af7a3cd92i0,1c4c46786c49a0b89daef76f1e16fb509a507c7e78d1823d4316f196dc8dfc70i0,0717719a765b829d0b5313efd6febebb3740a3a544e659b5a471ac0579b72294i0,3aee3c9532244d7d5447b29f7f30d48df8ece47c585cdacf6bfe9a07d4d58499i0,2c6a1751b247ec63de3c6f6bed61e7dbf17f26770195e21a7ae947a1bca9260fi0,5fb7801ffe79438457bd9efc19db53346b4e3385223dad3d11f65ecaf7c8ee9ci0,8e6577f04d6f9bff3e6cfbcbf68c21aa91f218a58b4d30d0ee3d2250d80f92d0i0,6913567a4aa4508d30e78e369e56ef96dc91ed45a33e619d5abf5e8cd2f492d6i0,fb8e70a6df21912e2869d782fc70311066ea97e0b2b5649f09aa38b3a4ffe126i0,887973322772704c0e11e7b3cc64481d93d65eac45a80f498b634bb562fd0b29i0,302ab8203d4f26a47de193735e4339d32b0b35726d84303f19955b989e4ee0c0i0,24476dfc6db6bf59b1b10e00dac4f82dfca5ddf2e8b422fd93446b4a855d1cc1i0,7b825d2c6994c316a0683745b53237a44cce63aacbb6940969998d263df2be9ai0,886e422766c884d68977515ff794ec63d8aff903b24c2f379164b892b28866cbi0,99405d787f166ca6e50d6e221f35864786158ae5c5c2c18ac0d1b2be6a1cd427i0,e27e1ad33bd5be9fbd3b6b6a06e0aecbd3613878fac075b3f95959b15526d6e5i0,8dd1cea9f7f27c0467bee03ad1f499451cd222806fa8a717a2ecae39edf5634bi0,86fad577bf0384d518a0644197fafbd9cda8227f941381cb4fccbe812e7ec849i0,23cb48ab0df005d400952556ee5eaa55765e32c8eb3979af031a1b0474339cbbi0,6b151859c3bd92fecef5e0bcefbc48bc78e2b459e3c6bdb8f478702b919bde62i0,f59703128ff5a2e1511beac8757e71a2d3637f583c914ee67abc1f9bb4c00169i0,5590ac7173fff8ba9ae1056c1efc3717c5f5e5dfc8e813dba137914bd64eec28i0,9d8571393f44583386ea7220a0124e6f0bada9a4e911a63295ad68dce62c6c16i0,a0ebaa54e6d526761d62f455de23f81c37048f714d64a8dc825b6a1c77184c01i0,a200ae67a8aa79f3ef9fbcc8417117df2db1bf7bcf8fe98dfb1f5f7df51afa6ei0,52f08c497f8f33c0e1abf49ee43ba1aff4c4d7cd81db8ab7f57dc08ccc568a0bi0,8c507ff746863c92071327b5d47618e1c816ed575c4f25ff19b7970a3eaf0210i0,8720c7f90424e8b4d081db3c744f0cfb2f91fb85847aba55e05264fdc3ed6f93i0,9736573721aab97ef629bac6946a73d8351e605c7ef23dc206f5a4ebddcb757di0,1dbdbe1b734a13a19a5479bc3a4c5669acfb3a777d732d8f453e7a219864303ei0,80fb58ea610a35c62870284512b8a4518c5a72ebfce2cb2093e6a4bcdb63d0f8i0,6c46ea29f5015aafff5fa4fbc0b056cbd27974ec1b2b3347b7f5302ec3de546ci0,f579d4cbd94bb9f3cb56c58d22210dc6c5f807c38319307c59776356225e8847i0,29f4eb966bfd5635fc5f7057c18c35ca988e76d62ef61e46a0dd0ee27decc933i0,8b4a49951e8b06d4f28dff9bf694ed64489532b894418ab9fefdcea839366884i0,ce1439460a5e234424d05cbacb1a1473931d89777339d36ba93fbf7d80c1be82i0,e5fb22684910780561001bd5f320ad0b721e0bebdfd4246a15942c035b619fbai0,df3c7cd28be9592a14804f06269df3ba6dadcd30c54e8190764bac1fa3c80c45i0,2f10bfa268e03c76b7340362c44690574613e35e2ad7e81ee84bb4eb921780d3i0,c33d65bd7c9c419a70c627af4456bcab048e38a6c3143a18700f9455e670cfc6i0,06fed0d967f6c3e722abe17354fc25bddc6c0adf845ad959ff71f3f39964dd9ei0,2cc922bc1964e057823bde1bebeb04439a55f0a16c987afd26f66dccd8c1167bi0,83e0aeb277b6f230142dff404494379515c903db5ee8d719523fd01b795de105i0,4f3e1c20fc632b78aa55b1ac04866e6aca3668aa3a49b8154dc23a88fbbb2199i0,e862060468c871b37d459e7202684e99f1c5c5736406ff365dfbca3d520d84a5i0,1214f239157ff6bc58899ee40eccb3e155649581660e4acc584ad206c8461ecfi0,fca2ba9ae10deff0a6b34c1cbfec993e6401b99546036aa48afd2f3da7c49619i0,f7c11413c29c3cb71fa8538f0bf93ec8b0ae12cede7b3da1fce8d32ee7af402ci0,dbed15c3c4a4701f246eb569758a41e08214fc69a02781cf8a36cb251a6c2d7di0,09d2eced970f4f243d1aa9aeb1924667f897f2ec82ec475cf222fc921e29ef0fi0,36a3cfd592e77a4d368bdfcbb4b4d9aa3450dcd1be90ddc1a90741fdac364d61i0,9ede4e486db3b2dee97bb4cc365d02e2f692f6a994601e087319b75e079224c1i0,029424c60e1d18681373d06c7ea7f4c3116da614c65c01185ecb2b32d271f013i0,c1f4e4e1daa3b3be6ce5fddb93763700deacd78b985f6e354cdcd315297473eci0,727ab68b6abb727c24efae11d6b42f8b615cbd259fe307c3a2483fd0e8aec915i0,dd7d13e604d75b71b87cfae67ad12f325580270d0d4f6e6b6a95271f390036d2i0,ab49fa40b02464b71b6456e9be96a9487d0861810e33c84855b01e12f18de2cbi0,357fbf9e30f73827562fcdcbd18da0e4732a946693d31c31422fc5a90c9ef2dei0,0c1b12772a71095cccba87b54f2773a48e86430ef740eb86f16243e9fc8cc7c8i0,3f92916be3a21f5af68287b743a83f713bd58896bb392ee4941015c28ae48ba5i0,db5e4a71d7f803e9dfad7efd3e10bb9cdb94fefb426732f563703b1b129d9723i0,4320a2b4a8e032ab4e3feda22666708a766e3837d781d9acafb2f13e00a7a15ai0,9f738a8e69bdf1668222417343197f4f8a8dfdb24d662087ab32a5b0c40be41ai0,0e89d51515dcd84b264aa3a8559d591cab2b6d1662667e3390244b65333f3273i0,90cff71f406d987c9af9d12e8baf71c37a815ec79722b8fa7fa7a3152a9a8e8ai0,3925a62e82b0055b911fa706b978bb80349de14b8d1fd932e807b43e56682e3bi0,22831cb7a5cb9773170d035efb3b5221b343f357a8e4e8ccd5d97fff8c38c486i0,6af7ddbd030fe96f72753d6210641f0b7e1cce5209abbf88d79b7de7af18d1b8i0,22d10eec589e0630e56188737289ea6d1ae8bf0290ef92675c4e0949b461e026i0,4c3040130ad89946fabc227a3dccc8b9c9fde4c4605220a7e48ffc7493c3d4e1i0,10601cb2e74f9452514be0472f3469ef3f781765ab3d2f9cc710f4179c017f41i0,01c8052b03135ddb390f3f7a02569d02023a7776cf35a40f4450ca02b677cc8ei0,ff5ae957cf8a2765deb9cceb59aec1bfdbbc7e35ae9e36b351c1b4f619cf5b4di0,ac0fc2c1997d32c9931633b1918e9dabfe53b968920e5317adbdfd91438bd544i0,d0fab80d60fac556970a6d2e4d23e69fd7c2e9e200802555c3749369beb0ad2ai0,1ab696a29818fa619186dc7b17bab1cee5918846f87322077b72eecbf5942575i0,fad884b05a3ce33bf022d2786ad720a3b715aa61e2750a0b60bd52c1c0c71000i0,361ac0c3b5b18e19be584015ec85a262fca354d7a099edd2e3f440981399d1e9i0,425cce844395889629edcfae28b825f0fb197eeb244ff467224051eac63d0c55i0,4584972c2fd1f5b0dd0ed5e0d6f908584b178c6915b6940ce645783fa2ad4c69i0,b68051c2f848eb44fbf469167c59bd0eb0eaac34f8065b43ee3adda6a37a2b84i0,5a5280afeab0125d4472805b942c02ab3882d7ee0046243a35507a21f1523372i0,051fab3b8017c929d39db130c81eef2dfb289bad309d4e1e8a97dcd5cdc32d05i0,eb8fdaf49fe8c9a8c15136f3aa4995be6890539c67bc9611d3c67f676a8f4e38i0,b52a2cbe69464ae8599eea2772e965da4db2ed9ee0165789fcf0c598a7ec066ci0,e052e1c01cf2bb678978140b90788d2ee29ed0999158708827313e8b1e1ed8cai0,1d6423bf83269fd93568bc32b5b201a9e6192b8f463ad208f91759c72e150534i0,cd5699195bb311b39dc542a665604258288043f467414d29acc2b4b0e45ea7a6i0,8bda02b8db55170b7d68646368c222dd5db4db807ede7630a2943e713cca462bi0,425bc1984aea8f87321821d2aa75b49b6fb198320b72d7648c57a6a773010178i0,d9408f29aa5bdb854a3797192d311e6c1ce3cf9de0c4aac1684224c3c7502258i0,72921937996b056db9352a0fb75718073c3f2f8c8d03aa4affb97d1f0be7987fi0,263e5a989d3588f78edbd63d814e7f4d4767b06bc7a2321d797d6cbffd55c042i0,a685cef67867c8d552fda83fa910eb9a6af0081c3b02f82be10a289cc47ac4a5i0,2f8d712b325a4c6bbadabe788ad56de2ac0c89c9964f11a4197adc26a9805576i0,8793c649c5344cd5ff242840b142fb5b553ab1be5c3667411089cc8da624d448i0,9856338f967cdd57f4e4e1a9ffcd5c59806e239e248db4a1760a4e8d423fcb7ci0,4599c4da1282880425d4a56caa7499d337e4b844ca23ecff0aeaf08793a208bei0,447af120a00e25c74f80cc1d9ee73afb43f6bb5b6573f7c4c6144fe272cfbf17i0,fa2a63c51fc6dafa68b2b8a4d3ae01d304e5b98ac6a63ee575d318e5c9e294a1i0,cf3923171a856ca0ff2b1de88a287909c59b2443b3f0108b33d51b591be267dei0,2b1b8805b22f6c401b284b6f4ebbddfe50feb5735890392bf83d8fadd9ed36efi0,ab72f8de366288f13743679b2bf79ca20d7952726f29d73a4fe578343bf7b9f4i0,cf9ede51f95992ec51e1ddca435b425f15c397c16a1dba2320f8317e5a91de7fi0,7b580a16eaebed9d2555d121bcf697807b7a01d8f6d5be42ba251d0addeef4afi0,e24057169d9f040e92cba579e801455fc71f47b19feb07a877a0323721f93875i0,eba790a2a0ce6af442bc70524770a2a61b87eee5f4a404a3b25fec0b63d5abadi0,ea9f503ed7ae41213a9aef8296a22f7082f86ec4ae3897e33d86d55d9a335e3ai0,b50f1b1d3475b8219a864cb459314b480c0e638d0c7dc25e2763da64c84e0811i0,5c10f8cd4755b37f966c310475357efe777a2de94fcc084b6278ab9914ea357bi0,54637517fa97053f151de1476fe4a32543f2b6d08db70f781ec7f04dee11a475i0,a5e0f2bddb7963990552173e3e4e0b74d55332462080653d861c82361aac8959i0,c12186b89b88973fea464392c214ceba4e1c267d47a0667aba1987e30b4520c1i0,9774d1520c925ca052f3903ca4fd6832714f8c42050f6a8358722f5ff96f1b2di0,bfa15a2b11d4e449647c60a682b47eab871e4a23f57747fe5c14956cf66aecbfi0,9efe745cfc4d61977e02d767fc9d0245e76d2b5f86584afa12770e0e32a70e00i0,7139ef73cc543e9536977acf66f20c47ddd0499e2e48cd711dfd22904a6ad719i0,046012886bafdc9b4e5e53cb759fa2dc58dc5b922eeeedf82210af453f5848d7i0,baff5cfe2ad5a9ef453712419af4c648f08803587d0fddac7bc3214d7b3ae2e1i0,57df84af1521bd1dfdd7cad3ce9b93dea6e79a9565ac89f0771b3405925feacai0,e1239b0e3082ed65152c5529a0e9e48b270ecddf10fff32240831ff6579e3ba2i0,5541a1f90fec6e068827188d94f3cfb8e4d0b4c2d864a0f5c9f47d99dde4ecddi0,49a0ed8ff350e9ef5b2ff88acc31a9243265d24eb3179152fd57833a52ff0b09i0,302213dec93e5afaafca147ec7599201bd1c13f9f134a0e250903553646e1ed7i0,afa2a87050773b675921d5999d64ca49538d0cf1dbd433301a3ff6a0832d3524i0,430674ba3d4860afcf6d59d047195ae0fc413c0b7dd4bfa8b5ba33bf395dbf7ci0,8d423407557f73e622bdfafbd4155bed52d3316c83ebb88e4a902a466104a685i0,38418e43679c5a1ca1cf78edfada41cb1dd5714aa1694de083be67e57cf9b3a6i0,bcea732e29745bd04c4808cc2a62d436c30e98458b6937a088ae2fe13e7b1be5i0,f29601cd23c07a0e1e0be1a3e6c3248f951202fbf0d4487dc1f60e481a82bf86i0,d463df291ad03a8286ff6892eb664bf4b9a9839bf4ac49c3b688d1347196cbe5i0,3e0af40a5d0c3ebbd24a7092a4852ddac946bc979bc9127f20d78b92daaf09e6i0,2736151349af1c2808daf770d566c735450c714a0d802a0b1433a08e2f1dc418i0,300cd1aeed9ff0f751ab6d49a02386d273f0a8e0960def54b465c6f4d9327629i0,878aaaf5bf6bbbc77a86934d45382ed614f9a29f3602f679f1aa10d5988bbb5ci0,a3edc8d557c38f85b9d803fb434d0a17a96f686a8f0d966cdbe4399a25a7f214i0,2db13c246a22b517017713af87c3e7b4558fa84d6585953e5ea5cc54a581c68ei0,fb271c4545bbf5f40f7161142fefb355310a8a6307691ae631deec509a58db09i0,162c53d7f7407f30d9962ff410e54f24c3e3f31d2905056e7b7ab76606173797i0,aae3f36a85552749f384158a63aa2ac3e964d72639966566de75d8cfcfd35362i0,75fc46c492e9e77c4ca52bc14c6c4538819ca23c0ac56d85dc35a70ed3dac43di0,e2b595600f11ed8a44451034a669ddd8a547dc194e49685479cd7816fcb009d2i0,74da0075295329283ef7c34ac1076cde802b894b9906a9318a0b5bc08e9b432ci0,e5c91bf5e3e0416c6f1271045248595239bfd0ce1c67a1e5bd10306697bf619bi0,841c2eb678e2581ad7b5405644fbe42796493447bf38c420f601cea0a9182dbdi0,e3a1f03b9eb95d6890b2a92bb49b32f06f18967eef8c91c28dc151950ceff760i0,b3de8ca7cc4cc8fc477a9474e08d6f845473f99762e3430b6269ec4b5624dfa8i0,3f901c6e0aded664e29c8720dcf206e7a9e68bfc0b26d385b0d4e42b267326c0i0,6b7f50099d42a61e3e428ad6836444d5f7eb5d36b5d4c12c87c2c32cab281adei0,3323cb661cd82ed2cc8b1c383190334077f98769f88c96d813eb04c1b3477d18i0,d148aaa4d767b3c834ac0dad1708100c9d9f2227f98bc14011f8ab016cd75c52i0,66e6be29b8795cc340de51ee9f4ddf6576a6154a4e4f1dc68126f70655f12463i0,87f49ecea125bc004a5e9094f3acaeec44d82bec4a19cf2a015ef67e370d9c76i0,0ea75e58f2eed4b2570b607f6f4175dcd6408c84ba6adfa3a27cee78edf40208i0,228d36c86d8f501e4b2e07bdb95b1f03bcd3a387dddbb6cb4ebb121a705217b5i0,3d23e54c534b632ac1a402b4a3230784c05ca4f674ac16dc3aef10d1ea1472f5i0,29154e6ffcdea3787ba8ff5df0aef6203fd7d84bc17587601763026f3b18fa8ei0,eeb51233ab7016d1f67e6ddfdd3ddd4f266db266a0f1d324b193113f88150c73i0,b83c85eb167b86fb484fa71e08efd2f514f6681b69aef7dd8f3b42da44195e08i0,e672975590da573cbcefc165445792a4b545f6020732a440ee90db545cb30ff5i0,efefaa3d66b8fd9aa2ae644f853eef306745b1af5b830eaadbec65a3fe1e1abfi0,6c8255999158e52ba7fa7b660c1d9732f597e16c3e5bfb105847667dd69ec48ci0,9c945af6d7d234f24a3260577bcdf807dee64a8d8ee6bf0df397fbb033928ee3i0,acea985d22d995fc0e155f858caae997bde879d9e3686c1b77db61542a73c4cci0,a253f5f00310cbb274724a652296fb219d9e5dde7a239b26e281e084307d3485i0,3cdafb380c94234ccda3c0a32f75e0de82612099fe7efc9fe5b92b2a8a738cf1i0,48606365ec9d8d314eb01263c1b90ea4a621657b1b7540ed247edbbba1b20603i0,d0865310a0f7a53c966f7ce8d7042aaee0acba8197aaeaecf70d04adb880c416i0,2ff1f0b4ebc921f0ef61987c094559d68ae49281bfcf44927fbd0430827d7164i0,84d3a695cdc231d6c81b9d740a3551fe91aa6796a5feaf0146803c543c6232d7i0,02c44e28e67efd858652c0183aff3d876372e3677ca607ae003b042ef5648e72i0,8fcbcc66e1e71c576c394e7e1591baf44611e0ffe6855562f35b1e722ffb96abi0,e01fa57801ac182d47e4f20591d0f4897edf026e7ae3c9d90641dfbb88902f97i0,716a0b73a8657dd16c33a677c3ccd348993e5305d4b6f143442f9a1e7fd01f65i0,892487c8ac9795bd0d8bcbb426412916b65a4aa4c860c7fd7b3250091875d9f7i0,f158cb1452c78aa649bcce94f04f1a60cbbc53052e7cb9912e3c7e2590042352i0,f13bd1bb413365e9127bbefc59c18de7491686a91ecf62c3f7f994ff45ab358fi0,4cdbdf2bc692d6f8ff6c190442a15898b686a9a4573831fc1adfb81ccc2defa4i0,a5f9de59bf9e036f88a89c3b4dead4f5492602508d1b2c9f019c8fe2dcf1fce7i0,b8c0eb0e21ea1746b5f2275f2e659fd04bab14e901fcce25053783dea5fcc3c4i0,388e8159b2db371d3b61cb82e15864e9713ddc96d922f03b04af431a5411ba08i0,9c9387bee19304fc251547ee237d84bddf743768daa7939fdbe8b7b4c3380e22i0,3d3bc571e3c37e9a2ca6e2315599938fe972dae186be591dbf3d5f8524c49dd1i0,0d2c4ed227328a14913e0d1e4f978339355ae8eaf16d7ad9f84accfc0bf21783i0,fdf0a70eaf6d5312fe778c81b2f59d734b3de8b4dde85e12008136666d7dc25ci0,2916fc7c3e2b069868e905674bc8518f1cea3788bc818d1ffcbe45c34f502c00i0,1a8afe3080eb82d03ec692b2babf0fe8c4c434af6356bdf5ca83b4c6220666abi0,342785ff1e1f687863d6948e0b45be86cbf29e6b0563c46604b847201ec6d1dbi0,83cb3624c80fd20ade1ba62e57fae7996cb52a8407dfe00f666878cd6f313cddi0,9dbb369123491d76e77f8c728f43b46816ff1db081c4938b86b35eb0728158b4i0,d4f439f8caec9a0bdb09b03c33638c908e7a18b9731c734b57df0b08f2d961ddi0,68411ce88e5176e8b8fbf0471ced6d1d44e0d31e768a690046f750a96784c0b9i0,0a6905d53a176ebd1f19cd634f2c430de8b59b88fd22dd45031d411ddc8851bdi0,d7b6e94b3a5f4f1abffc2bb50fffc14b2cb59dccb021fc385b15b9b285a0e6aci0,c3910f0599c6d5954254f5f6475af538cef033652ff301ff5b92b475b440eb38i0,5cce1c3842c99888893a8934d2c2a2a06b7ac4437ba985389170d2820cb47684i0,037095bbdb1349f5df196fbef7b1676e41c9802ba8a010c541b078eb16e1d694i0,606ceaf54bb9194ca3f7e238563f70ca41ef7316bef3c5142369ecdb5c272db9i0,eeabfe89fcf3de75a5210b8bd2ac576a4cfbefbb7472665975403488709d9ad4i0,6e99600f3a603afdf5e187ff00fcf0f7524f470c3a7f4bd3fa9e909fa29cea76i0,5d7892db08c15816ef5680b203987a3c954124d0252604766e432e0e45fcb3d4i0,df6b36a551b910cb3a2b2af3cbdee34492a7d1eaf6ee953f0ae18b393d3312afi0,daf43e5bfea09a8d1e1e29a4e041daa0e4dd155083fe24c5facfda6555ca06c7i0,e41735402ce8c0b2dbe276bbb8f4e991e8f2e9c30d5b293d95fe4d0120846d6di0,23eaf7cd8b9abc4fca0979e19a88dc3f0b7ba01397ad2ccdf75faeabc70f1250i0,7dd3c152e3f36680aa61e80cdf6668e279bb9bfde7fdce4688bc443a7a04cd27i0,7fe98d6e2ec53530ec6c968f3f61ba1dc926635951cbd69179de9630a564a690i0,0467e9db768549ca9427414734428063957228c74f1282a0b3a509b1555b84e1i0,c4336b2ea0bfe58a42c538fd2f4128c0b7851235fa244c38da218b03c2e369d0i0,1258574356e7f5bb93a9fc4890dba4d5cbc96882445c770229bc31f5283e673di0,99b6991896d553e56efde5bd0ed1b509f9099f8cb226ddc889b5336b9d1ae9dei0,3ec4430e84b04e940c6a90208582430439610d8b9473512cedf372427822efcbi0,accc36d5579aa4cda33fc9fd7ec0f510da61643722859df3ed510af408437a1di0,1c31d128d37b425487769017b7ac9167b3f280ebdb28d549ba0ab6d9f2cd6444i0,98663de7380ef729dda41c62f69713bd81be377e89b35931ad5ad0568f77cd93i0,4e81aaf1a45f81455a52f7ab4648743837e7215d65efbe11af312a6a6e871b75i0,1e5543f374f64063e2ef054b36bfc61dd5f9187a87ad93160b05a1948b8da40ei0,dafeaf6c465093d22a377221d63ddcd67a0204629a059c53e4b08c6727bdb3bci0,a22ba3d548bca1ee35738682b9a0a80df834f9ba7400ae5f4ee0a0d9dcc6e58ci0,30ac87ecbc1932e7819209cdc24f56c4586c6a909bef807e84e132306038fd9ei0,c1080f9eef1ae681619aba412cebdbde26d686bf3aadb9bdf691f0f81d4cd4c7i0,5c1400a06829c91c881b89074193baa7fb8b67ca792f4759f578ea8c63ec7466i0,08edd170ed291d424c8c68b7706a25a58d7ac0c397d3be78e6303785ed72b278i0,31122e4c2f67ace7530400e709eca2e071e07dfdbc3cdc0531f11e4684cac5ddi0,e59c0661c9524ea63ecb52204ec4621bff38f779af4f652f04637e15510e87fdi0,7dcd2db4946c80f45e44049d4f5ad49b9435c604d0e0c16e3ee76952a3033202i0,134fa028653976ff0ac32816c247ef1b93fe5e09ec6997ab23717d64963c4a6ci0,2685e36c5072329873261d91b7e833fca80057573f7ffca52bb050db1f52826bi0,978821a3ef5050ab37089831b176ba22f0f374a13c133346835f1020da9e71efi0,526276d71b0e2a0b3a99640616b6e479759b5c034e8176190ef0be0eed9cb894i0,1ad6b04d42fc13f3a55ed513f82134eb1ae883518201f70b072c90599ab471bdi0,e04d6e646084a43b9236a9c186cef1dd9bc9bb5beed51fd1c07913cfc3435372i0,0b44e56234c7d40d77df64fe09881f4a8016a3fe75d7b950ac2c1431c39dcff7i0,69e0172c36dba23910093d77a8a96e21c8d562feef333b5d0642ba4e18ac249ci0,4a96a46a361f9e2193ca1f378f1c87865f3b465a28f38543609f1f320eca19dfi0,302d38c306b6d76ad4ba462174a24990fea6aa9bf841a4ddfdd4672dea4f8f2ci0,91f1097d088e345fa07709c3903d181c17857c1291ebef3fbd6af7b521343af2i0,871cadb6ef53d8293eb9f7303f4d4c353216061ac3be35f91e77eeef54874c53i0,0ea403cd11018753db866c8721c8482e98c8ff88a1cbaa06ecd779f0171a9c99i0,4f098cfc350e140c54b811da312a425f888bbee38027faedb22f4624853f9649i0,580f416f40a7027734efcd814940a45daf163cec342de731abd8f0beb0ec7a26i0,38b5c7d36f80bf85a1e6536f8b3b5599418f79f8fdec29cbac74eb67ac9713f6i0,a8116210d6657da1328863930ea796681e782d055b694620634f121f14e13644i0,a2bfa312d6ac97629473bc37d72a51e1b925504773fd2fd3863a00a2261d19f1i0,2ce1a87af573cc0fb7b5d88af5bde0881dc00fcd59e12ff8d79a3d3d6b225454i0,f39b0f57dfa2b00471b45bdc6a118323afbcde603dc7fbf0ae713c1a011508d3i0,07797027c3f0ce671a9f9901918fa030eb0bd36eab05709358c63761a90d1e74i0,8fb38545a159e9899e493998c4a1080a4c82d700584396f29c7e3a912cead5f7i0,72404d155dc7ab9c8f4d38e00ae8306a748c10acf267b65bf94bb3aab8efe481i0,6e8662f783b960b2a984afc1e0b12c17c3c1d756e101c2373e3d72841ffacc14i0,f92a6583ef6ca946e121b48b7b383a59b489edadafd4f4befb16787bfdfeac95i0,2ba910be1da5e711f94986c5f93d8846573789ade888daba69eec6107bd78e1di0,a91e0240755de12200b42118f08b6e5a1f9c23e39f973d4478617f903877846ei0,2d7e046c9635144f0c39ba33bb7f709694979aa1c0d3317f830ab1638aaefc38i0,224c45282a915347ba5db8f3c90eab5614f6d16aa9f1ed3f07ebe447f9ceaa10i0,d9b6877b19316a62f0be4d5210c312b3127297f1f9ca1a57ae23abe8e77be6bbi0,9a135f97d8584c49a384f6e591651a251144a4807cfba1fd1dc3ad883dd2f084i0,1a9b374dfbb704d147df36fc15a057cd4fe0dd37eb62a34b884819e7a6c888bai0,831531cff6ff57de8f1237c9def2c2d32173e681d39961f53ba2d10ef2421f33i0,a46a891f202f700434aed8f30bbfafb2281525451d70ed06a8663f824d7e99a2i0,3646b213fb524271e04c40bd8949bd5b87faf420fdea84819c486be43c7ee92di0,71280ba8c949e0cd4ee6d9fd9ee551b7a8cc94396699c9c47d837d70dc77dd50i0,cf25e459c589907037e95f70cd8ea8b3d5f291aebf99a0107e161e5ce90f90e8i0,6a1313edc478c76ac63961327f3b28fc4c1cc94342cd8cd497f9bff614b65e8bi0,faea8af490d73dc441489af449b7e692f758d55af8bc6bb55a6bf7f867a19466i0,76104bcc03b7f70b4a233f2edd89a0ace98fdbcfd908b2e497d2d09d62967f0ei0,dfc2e74304cf6d09e313e2e8563e1d27d412598d48715da40e36baa5cb56fb23i0,208139f32ffab03f03fad29f55ca6e3fa63fe68117d50b3ef492d1f077624bc2i0,c355afc143113f4dad9703a14ef0b6875fbc76d61d3da6330b633b22744404c8i0,85a8b8802986061507c8912c1f4cb5aef08733bcee6c31aae31cb79bac6496d8i0,27a06f23786f6c6bf63fdfedcdf1e7fbf697555eb9192b4407d7aea5a682eccfi0,7a3d8f6963cce3a59185452bc910c63363040fabe5f2ed35c4bc3352d59c2804i0,11ba42330f1f38d2bd67f3557766a426eb272efb86d6ee7aea31924888135ebdi0,d68e17e35790e95550b7a87befe0cd16c7492f1a5bf653bf45f0487dc3782fdci0,6d0ac41495cf657c2b4e4c8890c86ea5d1320444815029884db02eef95071ebei0,e9032478c7f16e2705fea7ff79708d0380294279eea195a946c8dcb1a6591fc1i0,59804af1b168fb06687a5bde2aa9c59a75056180a2f14e7c02bc5bc792cefd99i0,06d9f526242617d8d988c829c55fc35c7373fedfae7dd26bf73030033bf62c7ci0,97fb12a9b4152ead010d455cf05094f215bde82c611dea3f9fd3881cb9dca080i0,290080762efe31f3b157b4f010f7e7fe8ca7911c069a859d923593529146901fi0,f5b5879a635ce2bc2e56c00f802eab425a3f2dc2f1909a8f62ca2b8854bd1bb3i0,93909197da2fa9fe776dd949785060d5d4c6beb4d9a5cf201a01a08e81daa653i0,604661a26d48456e730e0a1164fdc451e93379792ae82e466949362f6271334ei0,3ab734d2d66f17aa81f660087b78235f9604397b76843e2ebf00de38cdcc28dbi0,e84fd2b7801e4c8f4a600a9c28cd53ca9f1baa7550b4bb2adbde67f46607d3e1i0,2ab82ab345cc1ac78e8516624504597591ae9a15c1496db269bbfdaaeff3d8abi0,0d6888e3296c15d269b11a98c40929b2b574069e257cf7d398ae78b755f40d23i0,08ba30980352886f04bca37b4875ba292c89b4ec2eab5f1b3412613139537f84i0";
+        let idArray = identifiers.split(",");
+        let satList = ['434147525741434','535818676818535','650646909646056','687307919703786','649539565935946'];
+
+        async function generateAllFusions() {
+            for (const sat of satList) {
+                await generateFusion(sat);
+            }
+        }
+
+        function generateFusion(sat) {
+            return new Promise((resolve) => {
+                // Generate a unique ID for the new container
+                const newContainerId = 'art-container-' + Date.now();
+
+                // Create a new div element for the art container
+                const newDiv = document.createElement('div');
+                newDiv.id = newContainerId;
+                newDiv.className = 'art-container';
+
+                // Create a new div element for the sat number
+                const satNumberDiv = document.createElement('div');
+                satNumberDiv.className = 'sat-number';
+                satNumberDiv.innerText = `Sat Number: ${sat}`;
+
+                // Append the sat number div above the canvas
+                newDiv.appendChild(satNumberDiv);
+
+                // Append the new div to the main container
+                document.getElementById('main-container').appendChild(newDiv);
+
+                // Use the sat number passed as a parameter
+                console.log("Sat Number:", sat);
+                seed = parseInt(sat);
+                borderSize = 30 + Math.floor(seededRandom() * (130 - 30));
+                console.log("Border Size:", borderSize);
+
+                // Initialize the p5 sketch with the new container's ID
+                new p5((p) => {
+                    p.preload = function () {
+                        let randomIndex = Math.floor(seededRandom() * idArray.length);
+                        let selectedIdentifier = idArray[randomIndex];
+                        let imageUrl = `https://ordiscan.com/content/${selectedIdentifier}`;
+                        img = p.loadImage(imageUrl, () => {
+                            resolve();
+                        });
+                        console.log("Gabe's Paintings:", selectedIdentifier);
+                    };
+
+                    p.setup = function () {
+                        p.pixelDensity(4);
+                        let scaledWidth = 1070 * scale_factor;
+                        let scaledHeight = 1300 * scale_factor;
+                        img.resize(scaledWidth, scaledHeight);
+                        p.createCanvas(scaledWidth, scaledHeight);
+                        setBorderColor(p);
+                        dv = 2 + Math.floor(seededRandom() * (10 - 2));
+                        console.log("Recursion Level:", dv);
+                        threshold = 25 + Math.floor(seededRandom() * (120 - 25));
+                        console.log("Threshold:", threshold);
+                        p.textSize(11 * scale_factor);
+                        p.noLoop();
+                    };
+
+                    p.draw = function () {
+                        p.background(borderColor);
+                        let scaledBorderSize = borderSize * scale_factor;
+                        let mosaicX = scaledBorderSize;
+                        let mosaicY = scaledBorderSize;
+                        let mosaicWidth = p.width - scaledBorderSize * 2;
+                        let mosaicHeight = p.height - scaledBorderSize * 2;
+
+                        RG(p, mosaicX, mosaicY, mosaicWidth, mosaicHeight, dv);
+
+                        let numCols = 10 + seededRandom() * (40 - 10);
+                        console.log("Columns:", numCols);
+                        let numRows = 10 + seededRandom() * (40 - 10);
+                        console.log("Rows:", numRows);
+                        let gridCellWidth = mosaicWidth / numCols;
+                        let gridCellHeight = mosaicHeight / numRows;
+                        let satIndex = 0;
+
+                        for (let i = 0; i < numCols; i++) {
+                            for (let j = 0; j < numRows; j++) {
+                                let num = sat[satIndex % sat.length];
+
+                                let randomOpacity = seededRandom();
+                                let minOpacity = 0;
+                                let maxOpacity = 50;
+                                let opacityValue =
+                                    (Math.floor(
+                                        randomOpacity * (maxOpacity - minOpacity) + minOpacity
+                                    ) *
+                                        255) /
+                                    100;
+
+                                let colorX = Math.floor(p.random(mosaicX, mosaicX + mosaicWidth));
+                                let colorY = Math.floor(
+                                    p.random(mosaicY, mosaicY + mosaicHeight)
+                                );
+                                let imgColor = img.get(colorX, colorY);
+
+                                p.fill(
+                                    p.red(imgColor),
+                                    p.green(imgColor),
+                                    p.blue(imgColor),
+                                    opacityValue
+                                );
+
+                                p.blendMode(p.SCREEN);
+
+                                let x = mosaicX + i * gridCellWidth + gridCellWidth / 2;
+                                let y = mosaicY + j * gridCellHeight + gridCellHeight / 2;
+
+                                p.textAlign(p.CENTER, p.CENTER);
+                                p.text(num, x, y);
+
+                                satIndex++;
+                            }
+                        }
+                        p.blendMode(p.BLEND);
+                        pixelSortCanvas(p);
+                        drawNoiseGrain(p);
+                        resolve();
+                    };
+                }, newContainerId);
+            });
+        }
+
+        function seededRandom(max = 1, min = 0) {
+            seed = (seed * 16807) % 2147483647;
+            if (seed < 0) seed += 2147483647;
+            return ((seed - 1) / 2147483646) * (max - min) + min;
+        }
+
+        function setBorderColor(p) {
+            if (seededRandom() < 0.5) {
+                borderColor = p.color(227, 221, 207);
+            } else {
+                let rawColor = getAccentColor(p, img);
+                borderColor = desaturateColor(p, rawColor, 0.5);
+            }
+        }
+
+        function RG(p, xpos, ypos, gwidth, gheight, depth) {
+            if (depth > 0 && seededRandom() < 0.95) {
+                let splitVertically = seededRandom() > 0.5;
+                let splitRatio = 0.3 + seededRandom() * (0.7 - 0.3);
+
+                if (splitVertically) {
+                    let midY = Math.floor(gheight * splitRatio);
+                    RG(p, xpos, ypos, gwidth, midY, depth - 1);
+                    RG(p, xpos, ypos + midY, gwidth, gheight - midY, depth - 1);
+                } else {
+                    let midX = Math.floor(gwidth * splitRatio);
+                    RG(p, xpos, ypos, midX, gheight, depth - 1);
+                    RG(p, xpos + midX, ypos, gwidth - midX, gheight, depth - 1);
+                }
+            } else {
+                let patternType = Math.floor(seededRandom() * 4);
+                let mixPatterns = seededRandom() < 0.5;
+
+                if (mixPatterns) {
+                    let secondaryPatternTypes = [0, 1, 2, 3].filter(
+                        (pt) => pt !== patternType
+                    );
+                    let secondaryPatternType =
+                        secondaryPatternTypes[
+                        Math.floor(seededRandom() * secondaryPatternTypes.length)
+                        ];
+                    drawPattern(
+                        p,
+                        xpos,
+                        ypos,
+                        gwidth * 0.75,
+                        gheight * 0.75,
+                        patternType
+                    );
+                    drawPattern(
+                        p,
+                        xpos + gwidth * 0.25,
+                        ypos + gheight * 0.25,
+                        gwidth * 0.75,
+                        gheight * 0.75,
+                        secondaryPatternType
+                    );
+                } else {
+                    drawPattern(p, xpos, ypos, gwidth, gheight, patternType);
+                }
+            }
+        }
+
+        function drawPattern(p, x, y, w, h, patternType) {
+            switch (patternType) {
+                case 0:
+                case 1:
+                    let avgColor = getAverageColor(p, x, y, w, h);
+                    p.fill(avgColor);
+                    p.noStroke();
+                    p.rect(x, y, w, h);
+                    break;
+                case 2:
+                    p.stroke(0);
+                    p.noFill();
+                    drawStrokedPattern(p, x, y, w, h);
+                    break;
+                case 3:
+                    p.fill(0);
+                    p.noStroke();
+                    drawDottedPattern(p, x, y, w, h);
+                    break;
+            }
+        }
+
+        function getAverageColor(p, x, y, w, h) {
+            let r = 0,
+                g = 0,
+                b = 0;
+            let count = 0;
+            for (let i = x; i < x + w; i++) {
+                for (let j = y; j < y + h; j++) {
+                    let c = img.get(i, j);
+                    r += p.red(c);
+                    g += p.green(c);
+                    b += p.blue(c);
+                    count++;
+                }
+            }
+            r = r / count;
+            g = g / count;
+            b = b / count;
+
+            return p.color(r, g, b);
+        }
+
+        function getAccentColor(p, img, scale = 0.25) {
+            let smallImg = img.get();
+            smallImg.resize(img.width * scale, img.height * scale);
+            smallImg.loadPixels();
+
+            const colorCounts = {};
+            const threshold = 1;
+
+            for (let i = 0; i < smallImg.pixels.length; i += 4) {
+                let r = smallImg.pixels[i];
+                let g = smallImg.pixels[i + 1];
+                let b = smallImg.pixels[i + 2];
+                let colorKey = `${r},${g},${b}`;
+
+                if (colorCounts[colorKey]) {
+                    colorCounts[colorKey]++;
+                } else {
+                    colorCounts[colorKey] = 1;
+                }
+            }
+
+            return findMostFrequentColor(p, colorCounts);
+        }
+
+        function findMostFrequentColor(p, colorCounts) {
+            let accentColor = null;
+            let maxCount = 0;
+
+            for (let [key, count] of Object.entries(colorCounts)) {
+                if (count > maxCount) {
+                    maxCount = count;
+                    accentColor = key;
+                }
+            }
+
+            let [r, g, b] = accentColor.split(",").map((n) => parseInt(n));
+            return p.color(r, g, b);
+        }
+
+        function desaturateColor(p, col, percentage) {
+            const gray = p.lerpColor(col, p.color(128, 128, 128), percentage);
+            return gray;
+        }
+
+        function drawNoiseGrain(p) {
+            let density = p.pixelDensity();
+            let noiseGraphics = p.createGraphics(
+                p.width * density,
+                p.height * density
+            );
+            noiseGraphics.pixelDensity(1);
+
+            noiseGraphics.loadPixels();
+            for (let y = 0; y < noiseGraphics.height; y++) {
+                for (let x = 0; x < noiseGraphics.width; x++) {
+                    let grainValue = p.random(255);
+                    let index = (x + y * noiseGraphics.width) * 4;
+                    noiseGraphics.pixels[index] = grainValue;
+                    noiseGraphics.pixels[index + 1] = grainValue;
+                    noiseGraphics.pixels[index + 2] = grainValue;
+                    noiseGraphics.pixels[index + 3] = 30;
+                }
+            }
+            noiseGraphics.updatePixels();
+
+            p.blendMode(p.OVERLAY);
+            p.image(noiseGraphics, 0, 0, p.width, p.height);
+            p.blendMode(p.BLEND);
+        }
+
+        function drawStrokedPattern(p, x, y, w, h) {
+            for (let i = x; i < x + w; i += 5) {
+                p.line(i, y, i, y + h);
+            }
+        }
+
+        function drawDottedPattern(p, x, y, w, h) {
+            let dotDistance = 20;
+            let startX = x + 5;
+            let startY = y + 10;
+            let endX = x + w - 5;
+            let endY = y + h - 5;
+
+            for (let i = startX; i < endX; i += dotDistance) {
+                for (let j = startY; j < endY; j += dotDistance) {
+                    p.circle(i, j, 4);
+                }
+            }
+        }
+
+        function pixelSortCanvas(p) {
+            p.loadPixels();
+            let sortDirection = seededRandom() > 0.5 ? "horizontal" : "vertical";
+
+            if (sortDirection === "horizontal") {
+                pixelSortH(p);
+            } else {
+                pixelSortV(p);
+            }
+
+            p.updatePixels();
+        }
+
+        function pixelSortV(p) {
+            let imgWidth = p.width;
+            let imgHeight = p.height;
+
+            for (let x = 0; x < imgWidth; x++) {
+                let columnPixels = [];
+                for (let y = 0; y < imgHeight; y++) {
+                    let index = (x + y * imgWidth) * 4;
+                    let r = p.pixels[index];
+                    let g = p.pixels[index + 1];
+                    let b = p.pixels[index + 2];
+                    let a = p.pixels[index + 3];
+                    let brightness = (r + g + b) / 3;
+                    columnPixels.push({ r, g, b, a, brightness });
+                }
+
+                let start = 0;
+                for (let y = 0; y <= imgHeight; y++) {
+                    if (y == imgHeight || columnPixels[y].brightness < threshold) {
+                        if (y - start > 1) {
+                            let segment = columnPixels.slice(start, y);
+                            if (invert) {
+                                segment.sort((a, b) => b.brightness - a.brightness);
+                            } else {
+                                segment.sort((a, b) => a.brightness - b.brightness);
+                            }
+                            for (let i = start; i < y; i++) {
+                                columnPixels[i] = segment[i - start];
+                            }
+                        }
+                        start = y + 1;
+                    }
+                }
+
+                for (let y = 0; y < imgHeight; y++) {
+                    let sortedColor = columnPixels[y];
+                    let index = (x + y * imgWidth) * 4;
+                    p.pixels[index] = sortedColor.r;
+                    p.pixels[index + 1] = sortedColor.g;
+                    p.pixels[index + 2] = sortedColor.b;
+                    p.pixels[index + 3] = sortedColor.a;
+                }
+            }
+        }
+
+        function pixelSortH(p) {
+            let imgWidth = p.width;
+            let imgHeight = p.height;
+
+            for (let y = 0; y < imgHeight; y++) {
+                let rowPixels = [];
+                for (let x = 0; x < imgWidth; x++) {
+                    let index = (x + y * imgWidth) * 4;
+                    let r = p.pixels[index];
+                    let g = p.pixels[index + 1];
+                    let b = p.pixels[index + 2];
+                    let a = p.pixels[index + 3];
+                    let brightness = (r + g + b) / 3;
+                    rowPixels.push({ r, g, b, a, brightness });
+                }
+
+                let start = 0;
+                for (let x = 0; x <= imgWidth; x++) {
+                    if (x == imgWidth || rowPixels[x].brightness < threshold) {
+                        if (x - start > 1) {
+                            let segment = rowPixels.slice(start, x);
+                            if (invert) {
+                                segment.sort((a, b) => b.brightness - a.brightness);
+                            } else {
+                                segment.sort((a, b) => a.brightness - b.brightness);
+                            }
+                            for (let i = start; i < x; i++) {
+                                rowPixels[i] = segment[i - start];
+                            }
+                        }
+                        start = x + 1;
+                    }
+                }
+
+                for (let x = 0; x < imgWidth; x++) {
+                    let sortedColor = rowPixels[x];
+                    let index = (x + y * imgWidth) * 4;
+                    p.pixels[index] = sortedColor.r;
+                    p.pixels[index + 1] = sortedColor.g;
+                    p.pixels[index + 2] = sortedColor.b;
+                    p.pixels[index + 3] = sortedColor.a;
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
